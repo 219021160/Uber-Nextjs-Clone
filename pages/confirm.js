@@ -151,15 +151,18 @@ const ConfirmButton = tw.div`
 
 // px-4
 const ButtonContainer = tw.div`
-    flex
+    absolute
+    z-10
+    top-4 left-4
+    bg-white rounded-full
+    cursor-pointer
+    drop-shadow-md
 `
 
 // h-12
 // cursor-pointer
 
 const BackButton = tw.img`
-    w-12
-    h-12'
-    rounded-full
-    z-0
+    h-full
+    object-contain 
 `

@@ -43,7 +43,7 @@ const Map = (props) => {
             props.pickupCoordinate, // props.pickupCoordinate
             props.dropoffCoordinate // props.dropoffCoordinate
             ],
-            {padding: 30}
+            {padding: 60}
             );
         }
 

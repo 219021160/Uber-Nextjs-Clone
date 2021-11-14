@@ -1,12 +1,53 @@
 
+
+import {useState, useEffect, useRef} from "react"
 import tw from "tailwind-styled-components"
 import Link from "next/link"
 
 import Image from 'next/image'
 import Map from "./components/Map"
 
+import {auth} from "../firebase"
+import {onAuthStateChanged, signOut} from "firebase/auth"
+
+import { useRouter } from "next/dist/client/router"
+
+
+
+
 export default function Home() {
+
+
+  const [user, setUser] = useState(null);
+
+  const router = useRouter();
+
+  useEffect(()=>
+  {
+    //executes when it detects state change to ther user (google object)
+    return onAuthStateChanged(auth, user =>
+        {
+          if(!user)
+          {
+            setUser(null);
+            router.push("/login");
+          }else
+          {
+            setUser(
+              {
+                name: user.displayName,
+                email: user.email,
+                photoURL: user.photoURL
+              }
+            )
+          }
+
+        });
+
+  }, []);
  
+
+
   return (
 
     <Wrapper>
@@ -22,8 +63,8 @@ export default function Home() {
           <UberLogo src="https://i.ibb.co/84stgjq/uber-technologies-new-20218114.jpg" />
                 
           <Profile>
-            <Name>Username</Name>
-            <UserImage src="https://i.ibb.co/CsV9RYZ/login-image.png" />
+            <Name>{user && user.name}</Name>
+            <UserImage src={user && user.photoURL} onClick={()=> signOut(auth)} />
           </Profile>
 
         </Header>
@@ -98,8 +139,9 @@ const Profile = tw.div`
 `
 
 const Name = tw.div`
-  mr-4 w-20
+  mr-4 w-12 md:w-full
   text-sm
+  break-all md:break-normal
   `
 
 
@@ -108,6 +150,7 @@ const UserImage = tw.img`
   rounded-full
   object-contain 
   border-4 border-gray-200 p-px
+  cursor-pointer
 `
 
 
